@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zalo OA - chuyển tiếp</title>
+<!-- DÁN THẺ XÁC THỰC DOMAIN CỦA ZALO VÀO ĐÂY -->
+</head>
+<body style="font-family:Segoe UI,Arial,sans-serif;max-width:520px;margin:40px auto;padding:0 16px">
+<h3 id="t">Đang chuyển về ứng dụng…</h3><p id="m"></p>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), state = q.get('state') || '';
+  function fail(msg) { document.getElementById('t').textContent = '⚠️ Không chuyển tiếp được'; document.getElementById('m').textContent = msg; }
+  try {
+    var b = state.split('~')[1];
+    if (!b) return fail('Thiếu thông tin quay về. Hãy bấm lại nút "Cấp quyền OA với Zalo" trong ứng dụng.');
+    var s = atob(b.replace(/-/g, '+').replace(/_/g, '/'));
+    if (!/^https:\/\/script\.google\.com\/(a\/macros\/[A-Za-z0-9.-]+\/|macros\/)s\/[A-Za-z0-9_-]+\/exec$/.test(s)) return fail('Địa chỉ quay về không hợp lệ.');
+    var out = new URLSearchParams();
+    ['code', 'oa_id', 'state', 'error', 'error_reason'].forEach(function (k) { if (q.get(k)) out.set(k, q.get(k)); });
+    location.replace(s + '?' + out.toString());
+  } catch (e) { fail('Lỗi: ' + e.message); }
+})();
+</script></body></html>
